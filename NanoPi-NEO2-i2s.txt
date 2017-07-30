@@ -2,6 +2,6 @@
 
 
 	基本的にはNanoPi-NEOを同じ(384000kHzに対応させたりとか）
-　　　　ただ、i2cとi2sでpinＮＯが重複しているためi2cとi2sのstatusをともに"okay"にしておくと
-　　　　i2sdacが認識されない事態となる。（重複しているのはPA18,PA19)
+	ただ、i2cとi2sでpinＮＯが重複しているためi2cとi2sのstatusをともに"okay"にしておくと
+	i2sdacが認識されない事態となる。（重複しているのはPA18,PA19)
 	これは、使用しないi2cのstatusを"disabled"にすることで回避できる。
