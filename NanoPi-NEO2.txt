@@ -1,0 +1,61 @@
+﻿NanoPi-NEO2に関する雑資料
+
+
+（１）起動に必要なファイル
+
+　　　以下のファイルはbuildrootですべて作成可能である。
+
+　　　sunxi-spl.bin		(BBでいうところのMLO)
+      u-boot.itb		(BBでいうところのu-boot.img)
+      Image         		(kernel)
+      rootfs.cpio.gz		(ルートファイルシステム）
+　　　sun50i-h5-nanopi-neo2.dtb	(dtbファイル）
+　　　boot.scr			(boot.cmdから作る。uEnv.txtみたいなもの）
+
+
+（２）起動ＳＤカードの作り方
+
+　　　①　buildrootで作成したsunxi-spl.bin u-boot.itbを使って以下のようにする。
+	  
+	$ sudo dd if=sunxi-spl.bin of=/dev/sdb bs=1024 seek=8
+	$ sudo dd if=u-boot.itb of=/dev/sdb bs=1024 seek=40　
+
+
+　　　②　あとは、上記①後のSDカードにbuildrootで作成した以下のファイルを転送するだけ。
+
+　　　　　Image   rootfs.cpio.gz   sun50i-h5-nanopi-neo2.dtb   boot.scr
+
+
+（３）boot.cmdのひな型
+
+　　　以下のようにすればカーネル、ルートファイルシステム、dtb完全にメモリ上で動作させることができる。
+
+　　　setenv kernel_file	Image
+      setenv initrd_file	rootfs.cpio.gz
+      setenv fdtfile		sun50i-h5-nanopi-neo2.dtb
+      setenv rootfstype		ext2
+
+      setenv ramrootarg rootfstype=${rootfstype}
+
+      setenv bootargs console=${console} ${optargs} ${ramrootarg}
+
+      echo "fdt_addr_r		$fdt_addr_r"
+      echo "ramdisk_addr_r      $ramdisk_addr_r"
+      echo "kernel_addr_r	$kernel_addr_r"
+
+      load mmc 0:1 ${fdt_addr_r}	${fdtfile}
+      load mmc 0:1 ${ramdisk_addr_r}	${initrd_file};setenv initrd_size ${filesize}
+      load mmc 0:1 ${kernel_addr_r}	${kernel_file}
+
+      booti ${kernel_addr_r} ${ramdisk_addr_r}:${initrd_size} ${fdt_addr_r}
+
+
+（４）boot.scrの作成
+
+　　　u-bootで読み込めるように、boot.cmd（テキストファイル）を以下のようにしてboot.scrに変換する。
+
+　　　$ mkimage -C none -A arm64 -T script -d boot.cmd boot.scr
+
+
+
+　　　
