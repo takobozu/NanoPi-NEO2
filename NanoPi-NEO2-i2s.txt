@@ -1,7 +1,7 @@
 ﻿NanoPi-NEO2によるi2sdacの音出しをする際の注意事項
 
 
-	基本的にはNanoPi-NEOを同じ(384000kHzに対応させたりとか）。
-	ただ、sun50i-h5-nanopi-neo2.dtb中、i2cとi2sでpinＮＯが重複しているためi2cとi2sのstatusをともに"okay"にしておくと
+	基本的にはNanoPi-NEOを同じ(384000kHzに対応させたりとか）。ただ、NanoPi-NEOのところでは書き忘れていたが
+	sun50i-h5-nanopi-neo2.dtb中、i2cとi2sでpinＮＯが重複しているためi2cとi2sのstatusをともに"okay"にしておくと
 	i2sdacが認識されない事態となる。（重複しているのはPA18,PA19)
 	これは、使用しないi2cのstatusを"disabled"にすることで回避できる。
