@@ -4,13 +4,12 @@
 （１）起動に必要なファイル
 
 　　　以下のファイルはbuildrootですべて作成可能である。
-
-　　　sunxi-spl.bin		(BBでいうところのMLO)
-      u-boot.itb		(BBでいうところのu-boot.img)
-      Image         		(kernel)
-      rootfs.cpio.gz		(ルートファイルシステム）
-　　　sun50i-h5-nanopi-neo2.dtb	(dtbファイル）
-　　　boot.scr			(boot.cmdから作る。uEnv.txtみたいなもの）
+	sunxi-spl.bin	(BBでいうところのMLO)
+	u-boot.itb	(BBでいうところのu-boot.img)
+	Image		(kernel)
+	rootfs.cpio.gz	(ルートファイルシステム）
+	sun50i-h5-nanopi-neo2.dtb	(dtbファイル）
+	boot.scr	(boot.cmdから作る。uEnv.txtみたいなもの）
 
 
 （２）起動ＳＤカードの作り方
@@ -30,7 +29,7 @@
 
 　　　以下のようにすればカーネル、ルートファイルシステム、dtb完全にメモリ上で動作させることができる。
 
-　　　setenv kernel_file	Image
+      setenv kernel_file	Image
       setenv initrd_file	rootfs.cpio.gz
       setenv fdtfile		sun50i-h5-nanopi-neo2.dtb
       setenv rootfstype		ext2
