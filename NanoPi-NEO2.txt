@@ -56,5 +56,7 @@
 　　　$ mkimage -C none -A arm64 -T script -d boot.cmd boot.scr
 
 
+（５）24bitwavが一部ノイズになるときの対処法（upnprendererに共通して起こる）
 
-　　　
+　　　libcurlのバージョンは29年7月31日時点で7.54.1であるがこれをupnprenderer側に使用すると一部の24bit,wavでノイズまみれ
+   　となる。このような場合、7.50.1でビルドすると問題はなくなる。　
