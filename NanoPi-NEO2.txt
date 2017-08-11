@@ -27,7 +27,7 @@
 
 （３）boot.cmdのひな型
 
-　　　以下のようにすればカーネル、ルートファイルシステム、dtb完全にメモリ上で動作させることができる。
+　　　以下のようにすればカーネル、ルートファイルシステム、dtbすべてを完全にメモリ上で動作させることができる。
 
       setenv kernel_file	Image
       setenv initrd_file	rootfs.cpio.gz
