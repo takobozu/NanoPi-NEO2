@@ -1,0 +1,25 @@
+﻿buildroot menuconfig(NanoPi-NEO2特有の部分）
+
+
+[1]Target options
+   Target Architecture (AArch64(little endian))
+   Target Architecture Variant (coretex-A53)
+   Floating point strategy (FP-ARMv8)
+
+[2]Toolchain
+   Toolchain (Linaro AArch64 2017.02)
+
+
+[3]Kernel
+   (sunxi_arm64) Defconfig name
+   (allwinner/sun50i-h5-nanopi-neo2) Device Tree Source file names
+
+[4]Bootloaders
+       U-Boot binary format ---> [*] Custom (specify below)
+                                 (u-boot.itb) U-Boot binary format: custom names
+   [*] Install U-Boot SPL binary image
+   (spl/sunxi-spl.bin) U-Boot SPL binary image name
+
+
+
+
