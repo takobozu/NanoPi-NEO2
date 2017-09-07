@@ -1,0 +1,33 @@
+﻿kernel遊び
+
+
+2017年9月7日現在、freindlyarm提供のカーネルバージョンは4.11.2であるが、そろそろバージョンをあげたもので試してみたい。
+そこで、成功したパターンのみ、その注意点などを記載しておく。
+
+
+(1)4.13系
+　　mainline kernelとしてはNanoPi-NEO2を正式にサポートした。
+    arch/arm64/boot/dts/allwinnerにsun50i-h5-nanopi-neo2.dtsが存在している。
+    arch/arm64/configsにあるdefconfigをsunxi_arm64_defconfigにリネームしてビルド、起動にも成功した。
+　　rtパッチがないため、lowlatencyでビルドした。
+　　sun8i-i2s.cがないためi2sは組み込めない。
+　　H3(NanoPi-NEOに採用されている）で4.14でi2sを正式サポートする旨アナウンスされている。（sunxiからの情報）
+    
+
+(2)4.11系（EOLとなっている）
+　　mainline kernelでの最新のものは4.11.12であるが、これはNanoPi-NEO2をサポートしていない。
+　　arch/arm64/boot/dts/allwinnerにsun50i-h5-nanopi-neo2.dtsが存在しない。
+　　friendlyarmの4.11.2にあるsun50i-h5-nanopi-neo2.dts他、関連があると思われるソースを無理やり組み込んでビルドしてみたが起動せず。
+　　https://github.com/Icenowyのカーネルソースを使ってみた。
+　　ブランチはsunxi64-4.11.yである。(バージョンは4.11.10)
+　　このソースにはarch/arm64/boot/dts/allwinnerにsun50i-h5-nanopi-neo2.dtsが存在する。
+    rtパッチはpatch-4.11.12-rt13.patchを当てた。/kernel/sched/fair.c.rejが出るが、手修正は簡単なので実行。
+　　arch/arm64/configsには相変わらず、defconfigしかない
+　　試しにfriendlyarmの4.11.2のソース内にある、sunxi_arm64_defconfigをもってきてビルドした。
+　　結果はビルドにも成功、起動した。
+　　combo384をつないで、イーサネット分離で音出しも確認できた。（バージョン表示は 4.11.10-rt13)
+　　
+　　
+　　
+　　
+　　
