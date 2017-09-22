@@ -6,4 +6,4 @@ MPD_CONF_OPTS += --enable-rtopt \(バックスラッシュ）
                 CFLAGS=" -O2 -march=armv8-a -mtune=cortex-a53 -ffast-math" \(バックスラッシュ）
                 CXXFLAGS="-O2 -march=armv8-a -mtune=coretex-a53 -ffast-math"
 
-
+同様に、alsa-lib.mk alsa-utils.mk flac.mk audiofile.mk libcurl.mk libsndfile.mkにも上記と同様に最適化してやると音がよくなる。
