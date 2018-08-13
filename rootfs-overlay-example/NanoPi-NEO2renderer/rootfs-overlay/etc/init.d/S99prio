@@ -1,0 +1,51 @@
+#!/bin/sh
+
+sleep 2
+
+mpd=$(pidof mpd)
+io=$(pstree -p $(pidof mpd) | grep -o io.* | grep -o [0-9]*)
+player=$(pstree -p $(pidof mpd) | grep -o player.* | grep -o [0-9]*)
+decoder=$(pstree -p $(pidof mpd) | grep -o decoder.* | grep -o [0-9]*)
+output=$(pstree -p $(pidof mpd) | grep -o output.* | grep -o [0-9]*)
+
+
+taskset -p 2 $mpd &>/dev/null
+renice -10 -p $mpd
+
+taskset -p 2 $io &>/dev/null
+chrt -f -p 1 $io &>/dev/null
+
+taskset -p 8 $player &>/dev/null
+
+taskset -p 8 $decoder &>/dev/null
+
+taskset -p 8 $output &>/dev/null
+
+for i in `pgrep rcu*` ; do taskset -p 1 $i ; done &>/dev/null 
+for i in `pgrep kworker*` ; do taskset -p 1 $i ; done &>/dev/null 
+for i in `pgrep ksoftirqd*` ; do taskset -p 1 $i ; done &>/dev/null
+for i in `pgrep ktimersoftd*` ; do taskset -p 1 $i ; done &>/dev/null
+for i in `pgrep cpu*` ; do taskset -p 1 $i ; done &>/dev/null
+for i in `pgrep migration*` ; do taskset -p 1 $i ; done &>/dev/null
+for i in `pgrep posix*` ; do taskset -p 1 $i ; done &>/dev/null
+for i in `pgrep kworker*` ; do renice 20 -p $i ; done
+#for i in `pgrep irq/*` ; do taskset -p 8 $i ; done &>/dev/null
+#for i in `pstree -p upmpdcli | grep -o [0-9]*` ; do taskset -p 8 $i ; done &>/dev/null
+
+#dma-controlleのaffinity　値は１６進数で設定　1ならcpu0 2ならcpu1 4ならcpu2 8ならcpu3となる。
+echo 4 > /proc/irq/6/smp_affinity
+#eth0のaffnity
+echo 2 > /proc/irq/14/smp_affinity
+
+echo 8250 > /proc/$player/timerslack_ns
+echo 8250 > /proc/$decoder/timerslack_ns
+echo 8250 > /proc/$output/timerslack_ns
+echo 8250 > /proc/$io/timerslack_ns
+echo 1280 > /proc/asound/card0/pcm0p/sub0/prealloc
+
+renice 20 -p $(pidof ntpd)
+renice 20 -p $(pidof syslogd)
+renice 20 -p $(pidof klogd)
+
+sysctl -p
+echo performance | tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor &>/dev/null
