@@ -1,6 +1,8 @@
 
-USER		everyone
-PASSWD		
-IP		192.168.1.18
+USER		xxxx
+PASSWD		xxxx
+IP		192.168.xxx.xxx
 MUSICdir	Multimedia/music
-			
+VERS		1.0
+RSIZE		65536
+WSIZE		65536
